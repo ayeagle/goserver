@@ -1,2 +1,5 @@
 # Environment variables
 .env
+
+# private development notes
+config_notes
