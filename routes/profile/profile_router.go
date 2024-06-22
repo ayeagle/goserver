@@ -26,33 +26,23 @@ import (
 func RegisterRoutes(mux *http.ServeMux) {
 	fmt.Printf("Profile router hit\n")
 
-	//  mux.HandleFunc("/", ProfileHandler)
+	mux.HandleFunc("/", ProfileRootHandler)
+	mux.HandleFunc("/profile/", ProfileRootHandler)
 
-	// mux.HandleFunc("", func(w http.ResponseWriter, r *http.Request) {
+	// mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	// 	fmt.Printf("Handler for / called. Path=%s\n", r.URL.Path)
-	// 	fmt.Print("EMPTY handled")
-	// 	ProfileHandler(w, r)
+	// 	ProfileRootHandler(w, r)
 	// })
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Handler for / called. Path=%s\n", r.URL.Path)
-		fmt.Print("one slash handled")
-
-		ProfileHandler(w, r)
-	})
-	mux.HandleFunc("/profile", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Handler for /profile called. Path=%s\n", r.URL.Path)
-		fmt.Print("pre slash handled")
-
-		ProfileHandler(w, r)
-	})
-	mux.HandleFunc("/profile/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Handler for /profile called. Path=%s\n", r.URL.Path)
-		fmt.Print("double slash handled")
-		ProfileHandler(w, r)
-	})
-	mux.HandleFunc("profile/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Handler for /profile called. Path=%s\n", r.URL.Path)
-		fmt.Print("post slash handled")
-		ProfileHandler(w, r)
-	})
+	// mux.HandleFunc("/profile", func(w http.ResponseWriter, r *http.Request) {
+	// 	fmt.Printf("Handler for /profile called. Path=%s\n", r.URL.Path)
+	// 	ProfileRootHandler(w, r)
+	// })
+	// mux.HandleFunc("/profile/", func(w http.ResponseWriter, r *http.Request) {
+	// 	fmt.Printf("Handler for /profile called. Path=%s\n", r.URL.Path)
+	// 	ProfileRootHandler(w, r)
+	// })
+	// mux.HandleFunc("profile/", func(w http.ResponseWriter, r *http.Request) {
+	// 	fmt.Printf("Handler for /profile called. Path=%s\n", r.URL.Path)
+	// 	ProfileRootHandler(w, r)
+	// })
 }

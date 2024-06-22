@@ -21,5 +21,5 @@ import "net/http"
 
 // RegisterRoutes registers the home routes with the given ServeMux
 func RegisterRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/", HomeHandler)
+	mux.HandleFunc("/", HomeRootHandler)
 }

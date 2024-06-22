@@ -27,6 +27,7 @@ import (
 
 // RegisterRoutes registers the search routes with the given ServeMux
 func RegisterRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/all", SearchAllHandler)
-	mux.HandleFunc("/one", SearchOneHandler)
+	mux.HandleFunc("/", SearchRootHandler)
+	mux.HandleFunc("/all/", SearchAllHandler)
+	mux.HandleFunc("/one/", SearchOneHandler)
 }

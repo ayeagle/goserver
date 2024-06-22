@@ -18,7 +18,10 @@ func isValidOrigin(origin string) bool {
 }
 
 func CORSMiddleware(next http.Handler) http.Handler {
+	fmt.Print("OUTSIDE CORS Middleware starting\n")
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Print("CORS Middleware starting\n")
 
 		origin := r.Header.Get("Origin")
 		fmt.Printf("Testing origin: %s\n", origin)
@@ -58,12 +61,19 @@ func CORSMiddleware(next http.Handler) http.Handler {
 }
 
 func AppendTrailingSlashMiddleware(next http.Handler) http.Handler {
+	fmt.Print("OUTSIDE trailing Middleware starting\n")
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Print("trailing Middleware starting\n")
+
 		if !strings.HasSuffix(r.URL.Path, "/") {
 			r.URL.Path += "/"
 		}
-		fmt.Print("Serve HTTP from append trailing \n")
-
 		next.ServeHTTP(w, r)
 	})
+}
+
+func StripAWSDefaultPathing(prefix string, next http.Handler) http.Handler {
+	fmt.Print("OUTSIDE strip Middleware starting\n")
+	return http.StripPrefix(prefix, next)
 }
