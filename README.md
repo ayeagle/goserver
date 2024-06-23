@@ -6,3 +6,7 @@ zip bootstrap.zip bootstrap
 
 
 GOOS=linux GOARCH=arm64 go build -o bootstrap main.go && zip bootstrap.zip bootstrap
+
+OR 
+
+sh redo

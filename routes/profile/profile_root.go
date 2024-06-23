@@ -10,10 +10,10 @@ func ProfileRootHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("profile data: root")
 
 	// Set a custom header
-	w.Header().Set("Content-Type", "text/plain")
+	// w.Header().Set("Content-Type", "text/plain")
 
 	// Write the HTTP status code
-	w.WriteHeader(http.StatusOK)
+	// w.WriteHeader(http.StatusOK)
 
 	// Write the response body
 	// fmt.Fprintln(w, "Hello, World!")

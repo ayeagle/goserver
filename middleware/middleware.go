@@ -13,19 +13,17 @@ var allowedOrigins = map[string]bool{
 	"https://djrabid.com":   true,
 }
 
+const PATH_TO_REMOVE = "/default/bennies"
+
 func isValidOrigin(origin string) bool {
 	return allowedOrigins[origin]
 }
 
 func CORSMiddleware(next http.Handler) http.Handler {
-	fmt.Print("OUTSIDE CORS Middleware starting\n")
-
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Print("CORS Middleware starting\n")
-
 		origin := r.Header.Get("Origin")
-		fmt.Printf("Testing origin: %s\n", origin)
-		fmt.Printf("CORSMiddleware evaluating path: %s\n", r.URL.Path)
+		fmt.Printf("DEBUG: Testing origin: %s\n", origin)
+		fmt.Printf("DEBUG: CORSMiddleware path: %s\n", r.URL.Path)
 
 		if isValidOrigin(origin) {
 			fmt.Printf("OK ORIGIN\n")
@@ -52,20 +50,13 @@ func CORSMiddleware(next http.Handler) http.Handler {
 			w.WriteHeader(http.StatusForbidden)
 			return
 		}
-
-		fmt.Printf("Able to evaluate the thing without early return.\n")
-		fmt.Print("Serve HTTP from CORS \n")
-
 		next.ServeHTTP(w, r)
 	})
 }
 
+// Should this be removed? TODO
 func AppendTrailingSlashMiddleware(next http.Handler) http.Handler {
-	fmt.Print("OUTSIDE trailing Middleware starting\n")
-
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Print("trailing Middleware starting\n")
-
 		if !strings.HasSuffix(r.URL.Path, "/") {
 			r.URL.Path += "/"
 		}
@@ -73,7 +64,6 @@ func AppendTrailingSlashMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func StripAWSDefaultPathing(prefix string, next http.Handler) http.Handler {
-	fmt.Print("OUTSIDE strip Middleware starting\n")
-	return http.StripPrefix(prefix, next)
+func StripAWSDefaultPathing(next http.Handler) http.Handler {
+	return http.StripPrefix(PATH_TO_REMOVE, next)
 }
