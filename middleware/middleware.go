@@ -10,20 +10,26 @@ var allowedOrigins = map[string]bool{
 	"":                      true, // localhost won't send origin to localhost
 	"http://localhost":      true,
 	"http://localhost:8080": true,
-	"https://djrabid.com":   true,
 }
 
-const PATH_TO_REMOVE = "/default/bennies"
+const DEFAULT_REQUEST_PATH_TO_REMOVE = "/default/bennies"
+
+func AddMiddlewareWrapper(router http.Handler) http.Handler {
+	return stripAWSDefaultPathingMW(
+		appendTrailingSlashMW(
+			checkCORSMW(
+				router)))
+}
 
 func isValidOrigin(origin string) bool {
 	return allowedOrigins[origin]
 }
 
-func CORSMiddleware(next http.Handler) http.Handler {
+func checkCORSMW(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
 		fmt.Printf("DEBUG: Testing origin: %s\n", origin)
-		fmt.Printf("DEBUG: CORSMiddleware path: %s\n", r.URL.Path)
+		fmt.Printf("DEBUG: checkCORSMW path: %s\n", r.URL.Path)
 
 		if isValidOrigin(origin) {
 			fmt.Printf("OK ORIGIN\n")
@@ -55,7 +61,7 @@ func CORSMiddleware(next http.Handler) http.Handler {
 }
 
 // Should this be removed? TODO
-func AppendTrailingSlashMiddleware(next http.Handler) http.Handler {
+func appendTrailingSlashMW(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if !strings.HasSuffix(r.URL.Path, "/") {
 			r.URL.Path += "/"
@@ -64,6 +70,6 @@ func AppendTrailingSlashMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func StripAWSDefaultPathing(next http.Handler) http.Handler {
-	return http.StripPrefix(PATH_TO_REMOVE, next)
+func stripAWSDefaultPathingMW(next http.Handler) http.Handler {
+	return http.StripPrefix(DEFAULT_REQUEST_PATH_TO_REMOVE, next)
 }

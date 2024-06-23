@@ -10,3 +10,5 @@ GOOS=linux GOARCH=arm64 go build -o bootstrap main.go && zip bootstrap.zip boots
 OR 
 
 sh redo
+
+Upload boostrap.zip to AWS lambda fx
