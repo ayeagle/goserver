@@ -42,10 +42,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	// }
 
 	mainRouter := createRouters()
-	wrappedRouter =
-		middleware.StripAWSDefaultPathing(
-			middleware.AppendTrailingSlashMiddleware(
-				middleware.CORSMiddleware(mainRouter)))
+	wrappedRouter := middleware.AddMiddlewareWrapper(mainRouter)
 	proxyEvent := handlerfunc.New(wrappedRouter.ServeHTTP)
 
 	return proxyEvent.ProxyWithContext(ctx, request)
